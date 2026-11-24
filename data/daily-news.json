@@ -1,5 +1,67 @@
 [
   {
+    "id": "breaking-nvda-jensen-reinstated-2026",
+    "slug": "jensen-huang-reinstated-nvidia-ceo-rally",
+    "title": "Jensen Huang Reinstated as Nvidia CEO: Tech Equities Surge as Shock Reversal Ignites $300B AI Rally",
+    "country": "United States",
+    "currency": "USD",
+    "dayOfWeek": "Tuesday",
+    "date": "Nov 24, 2026",
+    "session": "NEW_YORK",
+    "time": "Breaking · Just Now",
+    "impact": "HIGH",
+    "category": "Tech & AI Equities",
+    "readTime": "3 min read",
+    "author": "MacroPulse Tech & Equity Derivatives Bureau · Silicon Valley & New York",
+    "sourceAttribution": "Official Wire: Nvidia Board Announcement & Interbank Equity Feeds",
+    "imageUrl": "https://images.unsplash.com/photo-1591488320449-011701bb6704?auto=format&fit=crop&w=1400&q=80",
+    "actual": "+30.4%",
+    "forecast": "+2.5%",
+    "previous": "-12.8%",
+    "surpriseDeviation": 27.9,
+    "summaryWhatHappened": "Nvidia's board has officially reinstated Jensen Huang as President and CEO, effective immediately, in a stunning reversal just 11 days after his initial resignation. The announcement triggered an explosive 30%+ surge in Nvidia shares, adding over $300 billion in market value in a single session.",
+    "whyMarketMoved": "Leadership uncertainty was swiftly neutralized following high-level White House intervention confirming no national security concerns. Institutional funds executed massive short-covering and re-allocated capital aggressively into semiconductor and hyperscaler infrastructure names.",
+    "fullArticle": [
+      "In one of the most remarkable corporate reversals in Silicon Valley history, Nvidia’s board of directors has officially reinstated founder Jensen Huang as President and Chief Executive Officer, effective immediately.",
+      "The reinstatement comes just 11 days after Huang unexpectedly stepped down on November 12. Direct confirmation from senior U.S. government officials that his leadership posed zero national security risk cleared the runway for the board's unanimous vote.",
+      "Wall Street responded with an unprecedented buying stampede. Nvidia (NASDAQ: NVDA) shares erupted more than 30% in heavy institutional volume, lifting the entire semiconductor complex including AMD, Broadcom, and Taiwan Semiconductor.",
+      "Huang received an overwhelming hero's welcome upon his return to Nvidia's Santa Clara headquarters, telling cheering employees: \"I'm going to be a better CEO the second time around.\"",
+      "For cross-asset macro desks, the surge provided an immediate boost to broader benchmark indices, powering the Nasdaq 100 toward new all-time territory and igniting fresh risk-on sentiment across global trading desks."
+    ],
+    "assetReactions": {
+      "usd": "BULLISH",
+      "gold": "NEUTRAL",
+      "equities": "BULLISH"
+    },
+    "primaryImpacts": [
+      {
+        "asset": "Nvidia (NVDA)",
+        "bias": "BULLISH",
+        "confidencePct": 95
+      },
+      {
+        "asset": "Nasdaq (US100)",
+        "bias": "BULLISH",
+        "confidencePct": 90
+      }
+    ],
+    "volatilityRisk": "CRITICAL",
+    "keyLevels": [
+      {
+        "pair": "NVDA (Nvidia)",
+        "bias": "BULLISH",
+        "keyPivot": "$140.00",
+        "tradeScenario": "Massive institutional gap-up; primary support established at $138.50 with upside continuation targets expanding toward $165.00."
+      },
+      {
+        "pair": "US100 (Nasdaq)",
+        "bias": "BULLISH",
+        "keyPivot": "26,800",
+        "tradeScenario": "Semiconductor surge breaks overhead compression; targeting sustained expansion above 27,200."
+      }
+    ]
+  },
+  {
     "id": "briefing-2026-11-24",
     "slug": "daily-macro-briefing-2026-11-24",
     "title": "Daily Macro Wire (Nov 24, 2026): Gold Consolidates Near $3635 as Treasury Yields Anchor FX Flow",

@@ -3,6 +3,7 @@ import { EconomicEvent, PairBias, AssetImpact } from "./types";
 export function formatAssetName(raw: string): string {
   if (!raw) return raw;
   const clean = raw.trim();
+  if (/^NVDA|Nvidia/i.test(clean)) return "Nvidia (NVDA)";
   if (/^XAUUSD/i.test(clean)) return "Gold (XAU)";
   if (/^EURUSD/i.test(clean)) return "EUR/USD";
   if (/^GBPUSD/i.test(clean)) return "GBP/USD";
@@ -108,7 +109,17 @@ export function getEventAssetImpacts(event: EconomicEvent): AssetImpact[] {
 }
 
 export function getEventChartSymbol(event: EconomicEvent): string {
-  // 1. Tech & equities
+  // 1. Nvidia specific
+  if (
+    event.slug.includes("nvda") ||
+    event.slug.includes("nvidia") ||
+    event.title.toLowerCase().includes("nvidia") ||
+    event.title.toLowerCase().includes("jensen")
+  ) {
+    return "NVDA";
+  }
+
+  // 2. Tech & equities
   if (
     event.category?.toLowerCase().includes("tech") ||
     event.category?.toLowerCase().includes("equit") ||
@@ -156,6 +167,7 @@ export const TICKER_ITEMS = [
   { symbol: "US10Y", name: "US 10-Yr Yield", price: "4.942%", change: "+0.61%", isUp: true },
   { symbol: "GBPUSD", name: "Pound / USD", price: "1.3023", change: "-0.45%", isUp: false },
   { symbol: "US100", name: "Nasdaq 100", price: "26,787.12", change: "+7.02%", isUp: true },
+  { symbol: "NVDA", name: "Nvidia Corp", price: "$142.80", change: "+30.40%", isUp: true },
   { symbol: "USDJPY", name: "USD / Yen", price: "159.18", change: "+0.42%", isUp: true },
   { symbol: "AUDUSD", name: "Aussie / USD", price: "0.6542", change: "+0.28%", isUp: true },
   { symbol: "USDCAD", name: "USD / CAD", price: "1.3850", change: "-0.15%", isUp: false },

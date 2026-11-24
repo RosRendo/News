@@ -20,6 +20,7 @@ const SYMBOL_CONFIG: { [key: string]: { yahooSymbol: string; name: string; prefi
   USDCHF: { yahooSymbol: "CHF=X", name: "USD / Swiss Franc", decimals: 4 },
   US10Y: { yahooSymbol: "^TNX", name: "US 10-Yr Yield", decimals: 3 },
   US100: { yahooSymbol: "^NDX", name: "Nasdaq 100", decimals: 2 },
+  NVDA: { yahooSymbol: "NVDA", name: "Nvidia", prefix: "$", decimals: 2 },
   WTI: { yahooSymbol: "CL=F", name: "WTI Crude Oil", prefix: "$", decimals: 2 },
   BTCUSD: { yahooSymbol: "BTC-USD", name: "Bitcoin", prefix: "$", decimals: 2 },
 };
@@ -36,6 +37,7 @@ const FALLBACK_QUOTES: Record<string, MarketQuote> = {
   USDCHF: { symbol: "USDCHF", name: "USD / Swiss Franc", price: "0.8920", rawPrice: 0.8920, change: "+0.18%", isUp: true },
   US10Y: { symbol: "US10Y", name: "US 10-Yr Yield", price: "4.942%", rawPrice: 4.942, change: "+0.61%", isUp: true },
   US100: { symbol: "US100", name: "Nasdaq 100", price: "26,787.12", rawPrice: 26787.12, change: "+7.02%", isUp: true },
+  NVDA: { symbol: "NVDA", name: "Nvidia", price: "$142.80", rawPrice: 142.8, change: "+30.40%", isUp: true },
   WTI: { symbol: "WTI", name: "WTI Crude Oil", price: "$72.40", rawPrice: 72.4, change: "+0.85%", isUp: true },
   BTCUSD: { symbol: "BTCUSD", name: "Bitcoin", price: "$61,460.39", rawPrice: 61460.39, change: "+0.49%", isUp: true },
 };
