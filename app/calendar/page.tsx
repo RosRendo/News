@@ -8,6 +8,8 @@ import VolatilityBadge from "@/components/VolatilityBadge";
 import BiasMeter from "@/components/BiasMeter";
 import DynamicGoldImpact from "@/components/DynamicGoldImpact";
 import NewsletterBanner from "@/components/NewsletterBanner";
+import NextRiskHeroCountdown from "@/components/NextRiskHeroCountdown";
+import LiveReleaseCountdown from "@/components/LiveReleaseCountdown";
 import {
   Calendar as CalendarIcon,
   Info,
@@ -87,6 +89,9 @@ export default function CalendarPage() {
           </div>
         </div>
       </div>
+
+      {/* ── NEXT HIGH-IMPACT VOLATILITY CATALYST COUNTDOWN HERO ── */}
+      <NextRiskHeroCountdown events={SAMPLE_EVENTS} />
 
       {/* ── INTERACTIVE FILTER BAR ── */}
       <div className="p-4 rounded-2xl bg-white border border-slate-200 shadow-xs flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
@@ -187,11 +192,16 @@ export default function CalendarPage() {
                     <div className="p-6 flex-1 space-y-4">
                       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-3">
                         <div className="space-y-1">
-                          <div className="flex items-center gap-2">
+                          <div className="flex flex-wrap items-center gap-2">
                             <span className="text-xs text-slate-500 font-mono font-medium">
                               {event.time}
                             </span>
                             <VolatilityBadge level={event.volatilityRisk} />
+                            <LiveReleaseCountdown
+                              timeStr={event.time}
+                              dayOfWeek={event.dayOfWeek}
+                              actual={event.actual}
+                            />
                           </div>
                           <h3 className="text-base sm:text-lg font-bold text-slate-900 group-hover:text-blue-600 transition-colors">
                             {event.title}

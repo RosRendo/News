@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { saveDynamicDailyEvents, getAllEvents } from "@/lib/newsStore";
-import { EconomicEvent } from "@/lib/types";
+import { EconomicEvent, AssetImpact } from "@/lib/types";
 
 // Curated high-resolution editorial financial & macro photography (tested & verified)
 const EDITORIAL_IMAGES = [
@@ -26,12 +26,105 @@ const EDITORIAL_IMAGES = [
   "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=1400&q=80",
 ];
 
+const RSS_FEEDS = [
+  { url: "https://www.cnbc.com/id/100003114/device/rss/rss.html", category: "Top News", source: "CNBC Global Markets Desk" },
+  { url: "https://www.cnbc.com/id/19854910/device/rss/rss.html", category: "Tech & AI Equities", source: "CNBC Tech Wire" },
+  { url: "https://www.cnbc.com/id/10000664/device/rss/rss.html", category: "Monetary Policy & Rates", source: "Federal Reserve & CNBC Macro Desks" },
+];
+
 export async function GET(request: Request) {
   return handleDailyBriefing(request);
 }
 
 export async function POST(request: Request) {
   return handleDailyBriefing(request);
+}
+
+interface ParsedHeadline {
+  title: string;
+  source: string;
+  feedCategory: string;
+  score: number;
+  detectedType: "TECH" | "MACRO" | "FOREX" | "COMMODITY";
+}
+
+function cleanHtml(text: string): string {
+  return text
+    .replace(/<[^>]+>/g, "")
+    .replace(/&apos;/g, "'")
+    .replace(/&#39;/g, "'")
+    .replace(/&quot;/g, '"')
+    .replace(/&amp;/g, '&')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .trim();
+}
+
+async function fetchAndScoreHeadlines(): Promise<ParsedHeadline[]> {
+  const allHeadlines: ParsedHeadline[] = [];
+
+  for (const feed of RSS_FEEDS) {
+    try {
+      const res = await fetch(feed.url, {
+        headers: { "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)" },
+        next: { revalidate: 300 },
+      });
+      if (!res.ok) continue;
+
+      const xml = await res.text();
+      // Match all items in the feed, not just the first one
+      const itemRegex = /<item>([\s\S]*?)<\/item>/gi;
+      let match;
+      while ((match = itemRegex.exec(xml)) !== null) {
+        const itemXml = match[1];
+        const titleMatch = /<title>(?:<!\[CDATA\[)?([\s\S]*?)(?:\]\]>)?<\/title>/i.exec(itemXml);
+        if (!titleMatch || !titleMatch[1]) continue;
+
+        const cleanTitle = cleanHtml(titleMatch[1]);
+        if (cleanTitle.length < 20) continue;
+
+        // Score headline importance based on institutional volatility keywords
+        let score = 1;
+        let detectedType: "TECH" | "MACRO" | "FOREX" | "COMMODITY" = "MACRO";
+
+        const lower = cleanTitle.toLowerCase();
+
+        // 1. High-Impact Tech & AI keywords
+        if (/nvidia|jensen|semiconductor|chips|ai\b|nasdaq|tech\b|apple|microsoft|alphabet|google|meta|amazon/i.test(lower)) {
+          score += 15;
+          detectedType = "TECH";
+          if (/reinstat|surge|plunge|rally|record|billion|trillion|breakout|earnings|ceo/i.test(lower)) score += 10;
+        }
+
+        // 2. High-Impact Central Bank & Macro
+        if (/fed\b|powell|rate cut|fomc|inflation|cpi|treasury|yield|jobs report|nonfarm/i.test(lower)) {
+          score += 12;
+          detectedType = "MACRO";
+          if (/surge|spike|slump|hawk|dove|unexpected|hike/i.test(lower)) score += 8;
+        }
+
+        // 3. Forex & Commodities
+        if (/gold|xau|crude|oil|opec|dollar|dxy|euro|yen|yuan/i.test(lower)) {
+          score += 8;
+          detectedType = /gold|oil|crude/.test(lower) ? "COMMODITY" : "FOREX";
+        }
+
+        allHeadlines.push({
+          title: cleanTitle,
+          source: feed.source,
+          feedCategory: feed.category,
+          score,
+          detectedType,
+        });
+      }
+    } catch {
+      // Continue to next feed if one fails
+    }
+  }
+
+  // Sort descending by score
+  allHeadlines.sort((a, b) => b.score - a.score);
+  return allHeadlines;
 }
 
 async function handleDailyBriefing(request: Request) {
@@ -58,108 +151,146 @@ async function handleDailyBriefing(request: Request) {
     let gbpusdPrice = 1.3023;
     let usdjpyPrice = 159.18;
     let yieldPrice = 4.94;
+    let nvdaPrice = 142.8;
 
     try {
-      const priceRes = await fetch("https://query1.finance.yahoo.com/v8/finance/chart/GC=F?interval=1d", {
-        headers: { "User-Agent": "Mozilla/5.0" },
-      });
-      if (priceRes.ok) {
-        const d = await priceRes.json();
+      const [goldRes, nvdaRes] = await Promise.all([
+        fetch("https://query1.finance.yahoo.com/v8/finance/chart/GC=F?interval=1d", {
+          headers: { "User-Agent": "Mozilla/5.0" },
+        }),
+        fetch("https://query1.finance.yahoo.com/v8/finance/chart/NVDA?interval=1d", {
+          headers: { "User-Agent": "Mozilla/5.0" },
+        }),
+      ]);
+
+      if (goldRes.ok) {
+        const d = await goldRes.json();
         const p = d?.chart?.result?.[0]?.meta?.regularMarketPrice;
         if (typeof p === "number") goldPrice = p;
       }
-    } catch {
-      // fallback to live benchmark
-    }
-
-    // 2. Fetch live breaking RSS headlines to ground the context in today's real news
-    let breakingHeadline = "Central Banks Anchor Yield Curves Ahead of Major Inflation Releases";
-    let breakingSource = "Federal Reserve & CNBC Global Desks";
-
-    try {
-      const cnbcRes = await fetch("https://www.cnbc.com/id/10000664/device/rss/rss.html", {
-        headers: { "User-Agent": "Mozilla/5.0" },
-      });
-      if (cnbcRes.ok) {
-        const xml = await cnbcRes.text();
-        const titleMatch = /<item>[\s\S]*?<title>(?:<!\[CDATA\[)?([\s\S]*?)(?:\]\]>)?<\/title>/i.exec(xml);
-        if (titleMatch && titleMatch[1]) {
-          let cleanTitle = titleMatch[1].replace(/<[^>]+>/g, "").trim();
-          cleanTitle = cleanTitle
-            .replace(/&apos;/g, "'")
-            .replace(/&#39;/g, "'")
-            .replace(/&quot;/g, '"')
-            .replace(/&amp;/g, '&')
-            .replace(/&lt;/g, '<')
-            .replace(/&gt;/g, '>');
-          if (cleanTitle.length > 20) {
-            breakingHeadline = cleanTitle;
-            breakingSource = "CNBC Macro Intelligence Feed";
-          }
-        }
+      if (nvdaRes.ok) {
+        const d = await nvdaRes.json();
+        const p = d?.chart?.result?.[0]?.meta?.regularMarketPrice;
+        if (typeof p === "number") nvdaPrice = p;
       }
     } catch {
-      // fallback
+      // fallback to live benchmarks
     }
 
-    // 3. Build Daily Morning Macro Intelligence Briefing
+    // 2. Fetch and rank breaking RSS headlines across multiple categories
+    const rankedStories = await fetchAndScoreHeadlines();
+    const topStory = rankedStories[0] || {
+      title: "Central Banks Anchor Yield Curves Ahead of Major Inflation Releases",
+      source: "Federal Reserve & CNBC Global Desks",
+      feedCategory: "Monetary Policy & Rates",
+      score: 10,
+      detectedType: "MACRO" as const,
+    };
+
+    // 3. Tailor asset impacts and commentary based on detected story type
+    let primaryImpacts: AssetImpact[] = [];
+    let briefingTitle = "";
+    let briefingSummary = "";
+    let briefingDriver = "";
+    let category = topStory.feedCategory;
+    const isTech = topStory.detectedType === "TECH";
+
+    if (isTech) {
+      briefingTitle = `Daily Macro Wire (${formattedDate}): ${topStory.title}`;
+      briefingSummary = `High-beta technology and semiconductor equities dominate market flows today following institutional focus on ${topStory.title}. Wall Street order books reflect aggressive positioning across hardware, hyperscalers, and algorithmic tech desks.`;
+      briefingDriver = `Valuation multiples and capital re-allocations are dictated by corporate earnings expectations and semiconductor leadership, driving cross-market risk appetite.`;
+      category = "Tech & AI Equities";
+      primaryImpacts = [
+        { asset: "Nvidia (NVDA)", bias: "BULLISH", confidencePct: 92 },
+        { asset: "Nasdaq (US100)", bias: "BULLISH", confidencePct: 88 },
+      ];
+    } else {
+      briefingTitle = `Daily Macro Wire (${formattedDate}): ${topStory.title}`;
+      briefingSummary = `Global currency and commodity markets opened the ${dayOfWeek} session with Spot Gold testing liquidity around $${goldPrice.toFixed(2)}, while the U.S. Dollar Index (DXY) hovered near ${dxyPrice.toFixed(2)}. Top wire focus: ${topStory.title}.`;
+      briefingDriver = `Interbank bond desks are balancing persistent inflation readings against economic momentum, driving rotational liquidity between yields, FX pairs, and sovereign safe havens.`;
+      primaryImpacts = [
+        { asset: "U.S. Dollar (DXY)", bias: dxyPrice > 104 ? "BULLISH" : "NEUTRAL", confidencePct: 85 },
+        { asset: "Gold (XAU)", bias: goldPrice > 3600 ? "BULLISH" : "BEARISH", confidencePct: 80 },
+      ];
+    }
+
     const dailyBriefingSlug = `daily-macro-briefing-${dateStr}`;
 
     const newBriefing: EconomicEvent = {
       id: `briefing-${dateStr}`,
       slug: dailyBriefingSlug,
-      title: `Daily Macro Wire (${formattedDate}): Gold Consolidates Near $${goldPrice.toFixed(0)} as Treasury Yields Anchor FX Flow`,
-      country: "Global",
+      title: briefingTitle,
+      country: isTech ? "United States" : "Global",
       currency: "USD",
       dayOfWeek: dayOfWeek,
       date: formattedDate,
       session: "LONDON",
       time: "Today · 06:00 GMT",
       impact: "HIGH",
-      category: "Daily Intelligence",
+      category: category,
       readTime: "3 min read",
-      author: "MacroPulse Global Editorial Bureau · London & New York",
-      sourceAttribution: `Official Data: ${breakingSource} & Interbank Exchange Feeds`,
+      author: isTech
+        ? "MacroPulse Tech & Equity Derivatives Bureau · Silicon Valley & New York"
+        : "MacroPulse Global Editorial Bureau · London & New York",
+      sourceAttribution: `Official Data: ${topStory.source} & Interbank Feeds`,
       imageUrl: dailyImage,
-      actual: `$${goldPrice.toFixed(2)}`,
+      actual: isTech ? `$${nvdaPrice.toFixed(2)}` : `$${goldPrice.toFixed(2)}`,
       forecast: "Consolidation",
-      previous: `$${(goldPrice * 0.992).toFixed(2)}`,
+      previous: isTech ? `$${(nvdaPrice * 0.98).toFixed(2)}` : `$${(goldPrice * 0.992).toFixed(2)}`,
       surpriseDeviation: 0.8,
-      summaryWhatHappened: `Global currency and commodity markets opened the ${dayOfWeek} session with Spot Gold testing liquidity around $${goldPrice.toFixed(2)}, while the U.S. Dollar Index (DXY) hovered near ${dxyPrice.toFixed(2)}. Sovereign yields on 10-Year U.S. Treasuries anchored near ${yieldPrice.toFixed(2)}%. Top wire focus: ${breakingHeadline}.`,
-      whyMarketMoved: `Interbank bond desks are balancing persistent services inflation against cooling manufacturing indicators. Central bank rate cut projections remain divided between an aggressive easing cycle and a cautious data-dependent stance, prompting cross-asset consolidation.`,
+      summaryWhatHappened: briefingSummary,
+      whyMarketMoved: briefingDriver,
       fullArticle: [
-        `As European and American trading sessions overlap on ${formattedDate}, foreign exchange and commodity markets are responding to fresh macroeconomic drivers and interbank capital positioning.`,
-        `Top developing story across institutional desks today: "${breakingHeadline}". Traders are closely monitoring whether bond market yields will validate current central bank guidance.`,
-        `Spot Gold (XAUUSD) continues its robust structural holding pattern near $${goldPrice.toFixed(2)} per ounce, supported by sovereign reserve accumulation and physical demand, even as nominal bond yields trade near ${yieldPrice.toFixed(2)}%.`,
-        `In currency pairs, EUR/USD is defending the ${(eurusdPrice * 0.996).toFixed(4)} support territory, while USD/JPY trades actively near ${usdjpyPrice.toFixed(2)}, with the market remaining alert for policy divergence between the Fed and Bank of Japan.`,
-        `Our quant pivot matrix indicates that the primary trend for gold remains supported above $${(goldPrice * 0.993).toFixed(0)}, with resistance established at $${(goldPrice * 1.008).toFixed(0)}.`
+        `As European and American trading sessions overlap on ${formattedDate}, global institutional capital is reacting directly to fresh market intelligence.`,
+        `Top developing catalyst across institutional desks today: "${topStory.title}".`,
+        isTech
+          ? `In technology equities, Nvidia (NVDA) is trading near $${nvdaPrice.toFixed(2)}, anchoring semiconductor beta across global equity exchanges and driving heavy volume in Nasdaq futures.`
+          : `Spot Gold (XAUUSD) continues its structural pattern near $${goldPrice.toFixed(2)} per ounce, supported by sovereign reserve flows even as 10-Year Treasury yields hover near ${yieldPrice.toFixed(2)}%.`,
+        `In foreign exchange, EUR/USD is defending ${(eurusdPrice * 0.996).toFixed(4)}, while USD/JPY is navigating ${usdjpyPrice.toFixed(2)} with central bank policy divergence remaining a pivotal backdrop.`,
+        `Our quant desks advise monitoring primary liquidity pivots closely as institutional flow realigns for the New York cash open.`
       ],
+      primaryImpacts: primaryImpacts,
       assetReactions: {
         usd: dxyPrice > 104 ? "BULLISH" : "NEUTRAL",
         gold: goldPrice > 3600 ? "BULLISH" : "BEARISH",
-        equities: "NEUTRAL",
+        equities: isTech ? "BULLISH" : "NEUTRAL",
       },
-      volatilityRisk: "ELEVATED",
-      keyLevels: [
-        {
-          pair: "XAUUSD (Gold)",
-          bias: "BULLISH",
-          keyPivot: `$${goldPrice.toFixed(0)}`,
-          tradeScenario: `Buyers defending $${(goldPrice * 0.993).toFixed(0)} demand zone; targeting breakout towards $${(goldPrice * 1.008).toFixed(0)}.`,
-        },
-        {
-          pair: "EURUSD",
-          bias: "BEARISH",
-          keyPivot: `${(eurusdPrice * 1.002).toFixed(4)}`,
-          tradeScenario: `Transatlantic yield divergence keeps upside capped below ${(eurusdPrice * 1.005).toFixed(4)}.`,
-        },
-        {
-          pair: "USDJPY",
-          bias: "BULLISH",
-          keyPivot: `${(usdjpyPrice * 0.998).toFixed(2)}`,
-          tradeScenario: `Sovereign rate gap powers dollar upside towards 160.00.`,
-        },
-      ],
+      volatilityRisk: isTech ? "EXTREME" : "ELEVATED",
+      keyLevels: isTech
+        ? [
+            {
+              pair: "NVDA (Nvidia)",
+              bias: "BULLISH",
+              keyPivot: `$${(nvdaPrice * 0.98).toFixed(2)}`,
+              tradeScenario: `Institutional momentum intact above $${(nvdaPrice * 0.97).toFixed(2)}; upside expansion targeting $${(nvdaPrice * 1.08).toFixed(2)}.`,
+            },
+            {
+              pair: "US100 (Nasdaq)",
+              bias: "BULLISH",
+              keyPivot: "26,800",
+              tradeScenario: `Semiconductor strength maintains upside drift; key resistance at 27,200.`,
+            },
+          ]
+        : [
+            {
+              pair: "XAUUSD (Gold)",
+              bias: "BULLISH",
+              keyPivot: `$${goldPrice.toFixed(0)}`,
+              tradeScenario: `Buyers defending $${(goldPrice * 0.993).toFixed(0)} demand zone; targeting breakout towards $${(goldPrice * 1.008).toFixed(0)}.`,
+            },
+            {
+              pair: "EURUSD",
+              bias: "BEARISH",
+              keyPivot: `${(eurusdPrice * 1.002).toFixed(4)}`,
+              tradeScenario: `Transatlantic yield divergence keeps upside capped below ${(eurusdPrice * 1.005).toFixed(4)}.`,
+            },
+            {
+              pair: "USDJPY",
+              bias: "BULLISH",
+              keyPivot: `${(usdjpyPrice * 0.998).toFixed(2)}`,
+              tradeScenario: `Sovereign rate gap powers dollar upside towards 160.00.`,
+            },
+          ],
     };
 
     // Save to persistent storage
@@ -171,7 +302,10 @@ async function handleDailyBriefing(request: Request) {
       slug: dailyBriefingSlug,
       timestamp: new Date().toISOString(),
       imageUsed: dailyImage,
-      topHeadline: breakingHeadline,
+      topHeadline: topStory.title,
+      detectedType: topStory.detectedType,
+      primaryImpacts: primaryImpacts,
+      totalHeadlinesEvaluated: rankedStories.length,
       totalArticlesNow: getAllEvents().length,
     });
   } catch (err) {
