@@ -1,0 +1,114 @@
+[
+  {
+    "id": "briefing-2026-11-24",
+    "slug": "daily-macro-briefing-2026-11-24",
+    "title": "Daily Macro Wire (Nov 24, 2026): Gold Consolidates Near $3635 as Treasury Yields Anchor FX Flow",
+    "country": "Global",
+    "currency": "USD",
+    "dayOfWeek": "Tuesday",
+    "date": "Nov 24, 2026",
+    "session": "LONDON",
+    "time": "Today · 06:00 GMT",
+    "impact": "HIGH",
+    "category": "Daily Intelligence",
+    "readTime": "3 min read",
+    "author": "MacroPulse Global Editorial Bureau · London & New York",
+    "sourceAttribution": "Official Data: CNBC Macro Intelligence Feed & Interbank Exchange Feeds",
+    "imageUrl": "https://images.unsplash.com/photo-1535320903710-d993d3d77d29?auto=format&fit=crop&w=1400&q=80",
+    "actual": "$3634.70",
+    "forecast": "Consolidation",
+    "previous": "$3605.62",
+    "surpriseDeviation": 0.8,
+    "summaryWhatHappened": "Global currency and commodity markets opened the Tuesday session with Spot Gold testing liquidity around $3634.70, while the U.S. Dollar Index (DXY) hovered near 104.48. Sovereign yields on 10-Year U.S. Treasuries anchored near 4.94%. Top wire focus: Fed's John Williams indicates higher interest rates likely 'over time' to address inflation.",
+    "whyMarketMoved": "Interbank bond desks are balancing persistent services inflation against cooling manufacturing indicators. Central bank rate cut projections remain divided between an aggressive easing cycle and a cautious data-dependent stance, prompting cross-asset consolidation.",
+    "fullArticle": [
+      "As European and American trading sessions overlap on Nov 24, 2026, foreign exchange and commodity markets are responding to fresh macroeconomic drivers and interbank capital positioning.",
+      "Top developing story across institutional desks today: \"Fed's John Williams indicates higher interest rates likely 'over time' to address inflation\". Traders are closely monitoring whether bond market yields will validate current central bank guidance.",
+      "Spot Gold (XAUUSD) continues its robust structural holding pattern near $3634.70 per ounce, supported by sovereign reserve accumulation and physical demand, even as nominal bond yields trade near 4.94%.",
+      "In currency pairs, EUR/USD is defending the 1.0848 support territory, while USD/JPY trades actively near 159.18, with the market remaining alert for policy divergence between the Fed and Bank of Japan.",
+      "Our quant pivot matrix indicates that the primary trend for gold remains supported above $3609, with resistance established at $3664."
+    ],
+    "assetReactions": {
+      "usd": "BULLISH",
+      "gold": "BULLISH",
+      "equities": "NEUTRAL"
+    },
+    "volatilityRisk": "ELEVATED",
+    "keyLevels": [
+      {
+        "pair": "XAUUSD (Gold)",
+        "bias": "BULLISH",
+        "keyPivot": "$3635",
+        "tradeScenario": "Buyers defending $3609 demand zone; targeting breakout towards $3664."
+      },
+      {
+        "pair": "EURUSD",
+        "bias": "BEARISH",
+        "keyPivot": "1.0914",
+        "tradeScenario": "Transatlantic yield divergence keeps upside capped below 1.0946."
+      },
+      {
+        "pair": "USDJPY",
+        "bias": "BULLISH",
+        "keyPivot": "158.86",
+        "tradeScenario": "Sovereign rate gap powers dollar upside towards 160.00."
+      }
+    ]
+  },
+  {
+    "id": "briefing-2026-11-23",
+    "slug": "daily-macro-briefing-2026-11-23",
+    "title": "Daily Macro Wire (Nov 24, 2026): Gold Consolidates Near $3649 as Treasury Yields Anchor FX Flow",
+    "country": "Global",
+    "currency": "USD",
+    "dayOfWeek": "Tuesday",
+    "date": "Nov 24, 2026",
+    "session": "LONDON",
+    "time": "Today · 06:00 GMT",
+    "impact": "HIGH",
+    "category": "Daily Intelligence",
+    "readTime": "3 min read",
+    "author": "MacroPulse Global Editorial Bureau · London & New York",
+    "sourceAttribution": "Official Data: Federal Reserve, BLS & Interbank Exchange Feeds",
+    "imageUrl": "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?auto=format&fit=crop&w=1400&q=80",
+    "actual": "$3649.10",
+    "forecast": "Consolidation",
+    "previous": "$3619.91",
+    "surpriseDeviation": 0.8,
+    "summaryWhatHappened": "Global currency and commodity markets opened the Tuesday session with Spot Gold testing liquidity around $3649.10, while the U.S. Dollar Index (DXY) hovered near 104.48. Sovereign yields on 10-Year U.S. Treasuries anchored near 4.94%.",
+    "whyMarketMoved": "Interbank bond desks are balancing persistent services inflation against cooling manufacturing indicators. Central bank rate cut projections remain divided between an aggressive easing cycle and a cautious data-dependent stance.",
+    "fullArticle": [
+      "As European and American trading sessions overlap on Nov 24, 2026, foreign exchange and commodity markets are responding to key macroeconomic inflection points.",
+      "Spot Gold (XAUUSD) continues its robust structural holding pattern near $3649.10 per ounce, supported by sovereign reserve accumulation and hedge fund demand, even as nominal bond yields remain elevated.",
+      "In currency pairs, EUR/USD is defending the 1.0848 support territory, with the European Central Bank signaling further policy accommodation to support private sector credit creation.",
+      "Meanwhile, USD/JPY trades actively near 159.18, with the market remaining on high alert for currency intervention commentary from Japanese monetary authorities.",
+      "Our quant pivot matrix indicates that the primary trend for gold remains supported above $3624, with resistance established at $3678."
+    ],
+    "assetReactions": {
+      "usd": "BULLISH",
+      "gold": "BULLISH",
+      "equities": "NEUTRAL"
+    },
+    "volatilityRisk": "ELEVATED",
+    "keyLevels": [
+      {
+        "pair": "XAUUSD (Gold)",
+        "bias": "BULLISH",
+        "keyPivot": "$3649",
+        "tradeScenario": "Buyers defending $3624 demand zone; targeting breakout towards $3678."
+      },
+      {
+        "pair": "EURUSD",
+        "bias": "BEARISH",
+        "keyPivot": "1.0914",
+        "tradeScenario": "Transatlantic yield divergence keeps upside capped below 1.0946."
+      },
+      {
+        "pair": "USDJPY",
+        "bias": "BULLISH",
+        "keyPivot": "158.86",
+        "tradeScenario": "Sovereign rate gap powers dollar upside towards 160.00."
+      }
+    ]
+  }
+]

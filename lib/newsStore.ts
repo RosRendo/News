@@ -1,0 +1,77 @@
+import fs from "fs";
+import path from "path";
+import { EconomicEvent, PairBias } from "./types";
+import { SAMPLE_EVENTS, PAIR_BIASES } from "./newsData";
+
+const DATA_DIR = path.join(process.cwd(), "data");
+const DAILY_NEWS_FILE = path.join(DATA_DIR, "daily-news.json");
+
+function ensureDataFile() {
+  if (!fs.existsSync(DATA_DIR)) {
+    fs.mkdirSync(DATA_DIR, { recursive: true });
+  }
+  if (!fs.existsSync(DAILY_NEWS_FILE)) {
+    fs.writeFileSync(DAILY_NEWS_FILE, JSON.stringify([], null, 2), "utf8");
+  }
+}
+
+export function getDynamicDailyEvents(): EconomicEvent[] {
+  try {
+    ensureDataFile();
+    const raw = fs.readFileSync(DAILY_NEWS_FILE, "utf8");
+    const parsed = JSON.parse(raw);
+    if (Array.isArray(parsed)) {
+      return parsed;
+    }
+    return [];
+  } catch {
+    return [];
+  }
+}
+
+export function saveDynamicDailyEvents(newEvents: EconomicEvent[]): void {
+  try {
+    ensureDataFile();
+    const existing = getDynamicDailyEvents();
+    const newSlugs = new Set(newEvents.map((e) => e.slug));
+    
+    // Put newest/updated events first, keeping remaining historical briefings
+    const combined = [...newEvents, ...existing.filter((e) => !newSlugs.has(e.slug))];
+    fs.writeFileSync(DAILY_NEWS_FILE, JSON.stringify(combined.slice(0, 50), null, 2), "utf8");
+  } catch (err) {
+    console.error("Failed to save daily news:", err);
+  }
+}
+
+export function getAllEvents(): EconomicEvent[] {
+  const dynamicEvents = getDynamicDailyEvents();
+  const seenSlugs = new Set<string>();
+  const combined: EconomicEvent[] = [];
+
+  // Dynamic daily events first (newest)
+  for (const event of dynamicEvents) {
+    if (!seenSlugs.has(event.slug)) {
+      seenSlugs.add(event.slug);
+      combined.push(event);
+    }
+  }
+
+  // Baseline events
+  for (const event of SAMPLE_EVENTS) {
+    if (!seenSlugs.has(event.slug)) {
+      seenSlugs.add(event.slug);
+      combined.push(event);
+    }
+  }
+
+  return combined;
+}
+
+export function getEventBySlug(slug: string): EconomicEvent | undefined {
+  const all = getAllEvents();
+  return all.find((e) => e.slug === slug);
+}
+
+export function getPairBiases(): PairBias[] {
+  return PAIR_BIASES;
+}

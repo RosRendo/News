@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256" role="img" aria-labelledby="title-a">
+  <title id="title-a">MacroPulse Concept A - Pulse M</title>
+  <rect width="256" height="256" rx="48" fill="#0F172A"/>
+  <!-- Left Pillar -->
+  <path d="M 52 64 L 52 192" stroke="#FFFFFF" stroke-width="24" stroke-linecap="round"/>
+  <!-- Right Pillar -->
+  <path d="M 204 64 L 204 192" stroke="#FFFFFF" stroke-width="24" stroke-linecap="round"/>
+  <!-- Center Dynamic Macro Pulse (Letter M Chevron) -->
+  <path d="M 52 110 L 94 172 L 128 52 L 162 172 L 204 110" fill="none" stroke="#2DD4BF" stroke-width="24" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

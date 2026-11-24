@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256" role="img" aria-labelledby="title-c">
+  <title id="title-c">MacroPulse Concept C - Macro Apex</title>
+  <rect width="256" height="256" rx="48" fill="#0F172A"/>
+  <!-- Upper Ascending Apex Polygon -->
+  <path d="M 128 44 L 204 116 L 168 116 L 128 78 L 88 116 L 52 116 Z" fill="#2DD4BF"/>
+  <!-- Central Diamond Inflection Spark -->
+  <polygon points="128,110 146,128 128,146 110,128" fill="#FFFFFF"/>
+  <!-- Lower Directional Chevron -->
+  <path d="M 52 140 L 88 140 L 128 178 L 168 140 L 204 140 L 128 212 Z" fill="#94A3B8"/>
+</svg>
