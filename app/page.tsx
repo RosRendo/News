@@ -8,6 +8,7 @@ import NewsletterBanner from "@/components/NewsletterBanner";
 import LiveMarketRadar from "@/components/LiveMarketRadar";
 import LiveWireFeed from "@/components/LiveWireFeed";
 import LiveRssWireList from "@/components/LiveRssWireList";
+import SentimentTrapRadar from "@/components/SentimentTrapRadar";
 import {
   Flame,
   Clock,
@@ -186,7 +187,10 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ── 2. VISUAL EDITORIAL CARDS WITH FILTERS & PAGINATION ── */}
+      {/* ── 2. SMART MONEY VS. RETAIL CROWD SENTIMENT TRAP RADAR ── */}
+      <SentimentTrapRadar />
+
+      {/* ── 3. VISUAL EDITORIAL CARDS WITH FILTERS & PAGINATION ── */}
       <LiveWireFeed initialEvents={editorialStories} />
 
       {/* ── 3. NEWSLETTER WIRE SUBSCRIPTION ── */}
