@@ -1,9 +1,10 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { SAMPLE_EVENTS, getEventAssetImpacts } from "@/lib/newsData";
+import { EconomicEvent } from "@/lib/types";
 import VolatilityBadge from "@/components/VolatilityBadge";
 import BiasMeter from "@/components/BiasMeter";
 import DynamicGoldImpact from "@/components/DynamicGoldImpact";
@@ -18,6 +19,7 @@ import {
   ArrowRight,
   Filter,
   CheckCircle,
+  RefreshCw,
 } from "lucide-react";
 
 const CURRENCIES = ["ALL", "USD", "EUR", "GBP", "JPY", "AUD", "CAD", "CHF"] as const;
@@ -26,20 +28,45 @@ const DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"] as const;
 export default function CalendarPage() {
   const [selectedCurrency, setSelectedCurrency] = useState<string>("ALL");
   const [highImpactOnly, setHighImpactOnly] = useState<boolean>(false);
+  const [events, setEvents] = useState<EconomicEvent[]>(SAMPLE_EVENTS);
+  const [weekRange, setWeekRange] = useState<string>("Current Trading Week");
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  useEffect(() => {
+    async function loadLiveCalendar() {
+      try {
+        setIsLoading(true);
+        const res = await fetch("/api/calendar");
+        if (res.ok) {
+          const data = await res.json();
+          if (data.success && Array.isArray(data.events)) {
+            setEvents(data.events);
+            if (data.weekRange) setWeekRange(data.weekRange);
+          }
+        }
+      } catch {
+        // Fallback to SAMPLE_EVENTS
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
+    loadLiveCalendar();
+  }, []);
 
   // Filter events
   const filteredEvents = useMemo(() => {
-    return SAMPLE_EVENTS.filter((e) => {
+    return events.filter((e) => {
       const matchCurr =
         selectedCurrency === "ALL" || e.currency === selectedCurrency;
       const matchImpact = !highImpactOnly || e.impact === "HIGH";
       return matchCurr && matchImpact;
     });
-  }, [selectedCurrency, highImpactOnly]);
+  }, [events, selectedCurrency, highImpactOnly]);
 
   // Group events by day of week
   const eventsByDay = useMemo(() => {
-    const map: Record<string, typeof SAMPLE_EVENTS> = {
+    const map: Record<string, EconomicEvent[]> = {
       Monday: [],
       Tuesday: [],
       Wednesday: [],
@@ -63,7 +90,8 @@ export default function CalendarPage() {
         <div className="space-y-2">
           <div className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-900 font-mono">
             <CalendarIcon className="w-3.5 h-3.5 text-blue-600" />
-            Official Macro Schedule
+            <span>Official Macro Schedule • {weekRange}</span>
+            {isLoading && <RefreshCw className="w-3 h-3 text-slate-400 animate-spin ml-1" />}
           </div>
           <h1 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">
             Institutional Economic Calendar
@@ -91,7 +119,7 @@ export default function CalendarPage() {
       </div>
 
       {/* ── NEXT HIGH-IMPACT VOLATILITY CATALYST COUNTDOWN HERO ── */}
-      <NextRiskHeroCountdown events={SAMPLE_EVENTS} />
+      <NextRiskHeroCountdown events={events} />
 
       {/* ── INTERACTIVE FILTER BAR ── */}
       <div className="p-4 rounded-2xl bg-white border border-slate-200 shadow-xs flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">

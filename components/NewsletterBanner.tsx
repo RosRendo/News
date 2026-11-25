@@ -14,11 +14,35 @@ export default function NewsletterBanner({
 }: NewsletterBannerProps) {
   const [email, setEmail] = useState("");
   const [subscribed, setSubscribed] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [serverMessage, setServerMessage] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (email.trim()) {
-      setSubscribed(true);
+    if (!email.trim() || loading) return;
+
+    setLoading(true);
+    setErrorMessage("");
+
+    try {
+      const res = await fetch("/api/subscribe", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: email.trim(), pair }),
+      });
+
+      const data = await res.json();
+      if (res.ok && data.success) {
+        setSubscribed(true);
+        setServerMessage(data.message || "You are subscribed!");
+      } else {
+        setErrorMessage(data.error || "Subscription failed. Please check your email.");
+      }
+    } catch {
+      setErrorMessage("Network error. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -62,8 +86,8 @@ export default function NewsletterBanner({
             <div className="p-5 rounded-2xl bg-emerald-50 border border-emerald-200 flex items-center gap-3 text-emerald-900 font-medium text-sm">
               <CheckCircle className="w-5 h-5 text-emerald-600 shrink-0" />
               <div>
-                <p className="font-bold">You are subscribed!</p>
-                <p className="text-xs text-emerald-700">Check your inbox for tomorrow morning's London Briefing.</p>
+                <p className="font-bold">Subscription Confirmed</p>
+                <p className="text-xs text-emerald-700">{serverMessage || "You will receive institutional pre-market briefings."}</p>
               </div>
             </div>
           ) : (
@@ -72,22 +96,28 @@ export default function NewsletterBanner({
                 <input
                   type="email"
                   required
+                  disabled={loading}
                   placeholder="name@pro-trader.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 text-sm focus:outline-none focus:border-blue-600 focus:bg-white transition-all w-full placeholder:text-slate-400 font-medium"
+                  className="px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 text-sm focus:outline-none focus:border-blue-600 focus:bg-white transition-all w-full placeholder:text-slate-400 font-medium disabled:opacity-60"
                 />
                 <button
                   type="submit"
-                  className="px-6 py-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs uppercase tracking-wider transition-all shadow-sm hover:shadow-md flex items-center justify-center gap-2 whitespace-nowrap cursor-pointer"
+                  disabled={loading}
+                  className="px-6 py-3 rounded-xl bg-slate-900 hover:bg-slate-800 disabled:opacity-60 text-white font-bold text-xs uppercase tracking-wider transition-all shadow-sm hover:shadow-md flex items-center justify-center gap-2 whitespace-nowrap cursor-pointer"
                 >
-                  Subscribe Free
+                  {loading ? "Registering..." : "Subscribe Free"}
                   <ArrowRight className="w-3.5 h-3.5 text-blue-400" />
                 </button>
               </div>
-              <p className="text-[11px] text-slate-400 text-center sm:text-left">
-                No ads. No trading bot promotions. Only verified economic facts.
-              </p>
+              {errorMessage ? (
+                <p className="text-[11px] text-red-600 font-semibold">{errorMessage}</p>
+              ) : (
+                <p className="text-[11px] text-slate-400 text-center sm:text-left">
+                  No ads. No trading bot promotions. Only verified economic facts.
+                </p>
+              )}
             </form>
           )}
         </div>
