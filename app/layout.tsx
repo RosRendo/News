@@ -43,7 +43,7 @@ export default function RootLayout({
                 <Link href="/" className="hover:text-slate-900 transition-colors">Live Wire</Link>
                 <Link href="/calendar" className="hover:text-slate-900 transition-colors">Economic Calendar</Link>
                 <Link href="/bias/xauusd" className="hover:text-slate-900 transition-colors">Gold & Currencies</Link>
-                <a href="#newsletter" className="hover:text-slate-900 transition-colors">Daily Newsletter</a>
+                <Link href="/bias/eurusd" className="hover:text-slate-900 transition-colors">Currency Biases</Link>
               </div>
             </div>
             <div className="border-t border-slate-100 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-[11px] text-slate-400">

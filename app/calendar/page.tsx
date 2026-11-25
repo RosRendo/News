@@ -8,7 +8,6 @@ import { EconomicEvent } from "@/lib/types";
 import VolatilityBadge from "@/components/VolatilityBadge";
 import BiasMeter from "@/components/BiasMeter";
 import DynamicGoldImpact from "@/components/DynamicGoldImpact";
-import NewsletterBanner from "@/components/NewsletterBanner";
 import NextRiskHeroCountdown from "@/components/NextRiskHeroCountdown";
 import LiveReleaseCountdown from "@/components/LiveReleaseCountdown";
 import {
@@ -324,8 +323,6 @@ export default function CalendarPage() {
           );
         })}
       </div>
-
-      <NewsletterBanner contextMessage="Get every economic release preview sent directly to your inbox before the data drops." />
     </div>
   );
 }

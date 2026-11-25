@@ -4,7 +4,6 @@ import { getAllEvents } from "@/lib/newsStore";
 import { PAIR_BIASES, getEventAssetImpacts } from "@/lib/newsData";
 import VolatilityBadge from "@/components/VolatilityBadge";
 import BiasMeter from "@/components/BiasMeter";
-import NewsletterBanner from "@/components/NewsletterBanner";
 import LiveMarketRadar from "@/components/LiveMarketRadar";
 import LiveWireFeed from "@/components/LiveWireFeed";
 import LiveRssWireList from "@/components/LiveRssWireList";
@@ -192,9 +191,6 @@ export default function HomePage() {
 
       {/* ── 3. VISUAL EDITORIAL CARDS WITH FILTERS & PAGINATION ── */}
       <LiveWireFeed initialEvents={editorialStories} />
-
-      {/* ── 3. NEWSLETTER WIRE SUBSCRIPTION ── */}
-      <NewsletterBanner />
     </div>
   );
 }

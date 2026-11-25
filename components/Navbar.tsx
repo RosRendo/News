@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Activity, Calendar, Compass, Mail } from "lucide-react";
+import { Activity, Calendar, Compass, Radio } from "lucide-react";
 
 export default function Navbar() {
   return (
@@ -78,15 +78,13 @@ export default function Navbar() {
           </Link>
         </nav>
 
-        {/* Right Action: Pure News Newsletter Subscription */}
+        {/* Right Status Indicator */}
         <div className="flex items-center gap-3">
-          <a
-            href="#newsletter"
-            className="flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold px-4 py-2.5 rounded-xl transition-all shadow-xs hover:shadow-sm"
-          >
-            <Mail className="w-3.5 h-3.5 text-blue-400" />
-            <span>Daily Macro Wire</span>
-          </a>
+          <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-100 border border-slate-200 text-[11px] font-mono font-semibold text-slate-700">
+            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+            <span className="hidden sm:inline">LIVE FEED ACTIVE</span>
+            <span className="sm:hidden">LIVE</span>
+          </div>
         </div>
       </div>
     </header>

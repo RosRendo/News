@@ -5,7 +5,6 @@ import { getAllEvents, getEventBySlug } from "@/lib/newsStore";
 import { getEventAssetImpacts, getEventChartSymbol } from "@/lib/newsData";
 import VolatilityBadge from "@/components/VolatilityBadge";
 import BiasMeter from "@/components/BiasMeter";
-import NewsletterBanner from "@/components/NewsletterBanner";
 import TradingViewMiniChart from "@/components/TradingViewMiniChart";
 import {
   ArrowLeft,
@@ -359,12 +358,6 @@ export default async function NewsArticlePage({ params }: NewsArticlePageProps) 
           </div>
         </section>
       )}
-
-      {/* ── NEWSLETTER SUBSCRIPTION ── */}
-      <NewsletterBanner
-        pair={event.currency}
-        contextMessage={`Stay ahead of the next market catalyst on ${event.currency} and global interest rates with our daily briefing.`}
-      />
 
       {/* ── RELATED MACRO BRIEFINGS (CLICKABLE CARDS) ── */}
       <section className="space-y-4 pt-6 border-t border-slate-200">

@@ -6,7 +6,6 @@ import Link from "next/link";
 import { PairBias } from "@/lib/types";
 import { computeDynamicPairBias } from "@/lib/pivotCalculator";
 import BiasMeter from "@/components/BiasMeter";
-import NewsletterBanner from "@/components/NewsletterBanner";
 import TradingViewMiniChart from "@/components/TradingViewMiniChart";
 import {
   ArrowLeft,
@@ -190,9 +189,6 @@ export default function PairBiasDetailClient({ initialBias }: PairBiasDetailClie
               {biasData.traderAdvice}
             </p>
           </div>
-
-          {/* Newsletter Subscription */}
-          <NewsletterBanner pair={biasData.pair} />
         </div>
       </div>
     </div>
