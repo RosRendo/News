@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { PairBias } from "@/lib/types";
+import { computeDynamicPairBias } from "@/lib/pivotCalculator";
 import { Activity, ArrowRight, Radio } from "lucide-react";
 
 interface LiveMarketRadarProps {
@@ -42,13 +43,7 @@ export default function LiveMarketRadar({ initialBiases }: LiveMarketRadarProps)
             prev.map((item) => {
               const liveQuote = data.quotes[item.pair.toUpperCase()];
               if (liveQuote) {
-                return {
-                  ...item,
-                  price: liveQuote.price,
-                  change: liveQuote.change,
-                  isUp: liveQuote.isUp,
-                  updatedAt: "Live Real-Time",
-                };
+                return computeDynamicPairBias(item, liveQuote);
               }
               return item;
             })

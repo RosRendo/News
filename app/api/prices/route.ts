@@ -27,7 +27,7 @@ const SYMBOL_CONFIG: { [key: string]: { yahooSymbol: string; name: string; prefi
 
 // Fallback baseline quotes (accurate real-world values)
 const FALLBACK_QUOTES: Record<string, MarketQuote> = {
-  XAUUSD: { symbol: "XAUUSD", name: "Spot Gold", price: "$3,654.70", rawPrice: 3654.7, change: "+3.96%", isUp: true },
+  XAUUSD: { symbol: "XAUUSD", name: "Spot Gold", price: "$3,463.00", rawPrice: 3463.0, change: "-3.57%", isUp: false },
   DXY: { symbol: "DXY", name: "US Dollar Index", price: "104.48", rawPrice: 104.48, change: "+0.65%", isUp: true },
   EURUSD: { symbol: "EURUSD", name: "Euro / USD", price: "1.0892", rawPrice: 1.0892, change: "-0.76%", isUp: false },
   GBPUSD: { symbol: "GBPUSD", name: "Pound / USD", price: "1.3023", rawPrice: 1.3023, change: "-0.45%", isUp: false },

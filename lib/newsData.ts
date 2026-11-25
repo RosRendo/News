@@ -162,7 +162,7 @@ export function getEventChartSymbol(event: EconomicEvent): string {
 
 export const TICKER_ITEMS = [
   { symbol: "DXY", name: "US Dollar Index", price: "104.48", change: "+0.65%", isUp: true },
-  { symbol: "XAUUSD", name: "Spot Gold", price: "$3,654.70", change: "+3.96%", isUp: true },
+  { symbol: "XAUUSD", name: "Spot Gold", price: "$3,463.00", change: "-3.57%", isUp: false },
   { symbol: "EURUSD", name: "Euro / USD", price: "1.0892", change: "-0.76%", isUp: false },
   { symbol: "US10Y", name: "US 10-Yr Yield", price: "4.942%", change: "+0.61%", isUp: true },
   { symbol: "GBPUSD", name: "Pound / USD", price: "1.3023", change: "-0.45%", isUp: false },
@@ -780,19 +780,19 @@ export const PAIR_BIASES: PairBias[] = [
   {
     pair: "XAUUSD",
     name: "Spot Gold",
-    price: "$3,654.70",
-    change: "+3.96%",
-    isUp: true,
+    price: "$3,463.00",
+    change: "-3.57%",
+    isUp: false,
     bias: "BEARISH",
-    confidencePct: 78,
-    catalyst: "Elevated U.S. 10-Year real yields near 4.94% cap short-term upside as gold consolidates near the $3,660 pivot.",
+    confidencePct: 82,
+    catalyst: "Elevated U.S. 10-Year real yields near 4.94% cap upside as gold tests $3,430 support below the $3,485 session pivot.",
     imageUrl: "https://images.unsplash.com/photo-1610375461246-83df859d849d?auto=format&fit=crop&w=1200&q=80",
     keyLevels: {
-      resistance: 3685.0,
-      support: 3630.0,
-      pivot: 3660.0,
+      resistance: 3510.0,
+      support: 3430.0,
+      pivot: 3485.0,
     },
-    traderAdvice: "Gold tests overhead resistance near $3,685. Key session pivot at $3,660 dictates whether pullback extends to $3,630.",
+    traderAdvice: "Downward trajectory intact below $3,485 pivot. Watch for buyers defending the $3,430 demand zone.",
     updatedAt: "Updated Live",
   },
   {
