@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { Zap, Radio, ExternalLink, ArrowRight } from "lucide-react";
+import { Radio, ExternalLink, ArrowRight } from "lucide-react";
 
 interface WireItem {
   id: string;
@@ -67,7 +67,7 @@ export default function LiveRssWireList() {
         <div className="flex items-center gap-2">
           <div className="w-2 h-2 rounded-full bg-red-600 animate-pulse" />
           <h3 className="text-sm font-bold text-slate-900 flex items-center gap-1.5">
-            <Zap className="w-4 h-4 text-amber-500 fill-amber-500" />
+            <Radio className="w-4 h-4 text-blue-600" />
             Breaking News Wire
           </h3>
         </div>

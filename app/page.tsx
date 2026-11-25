@@ -9,12 +9,12 @@ import LiveWireFeed from "@/components/LiveWireFeed";
 import LiveRssWireList from "@/components/LiveRssWireList";
 import SentimentTrapRadar from "@/components/SentimentTrapRadar";
 import {
-  Flame,
+  Activity,
   Clock,
   ArrowRight,
   BarChart3,
   Layers,
-  Sparkles,
+  FileText,
 } from "lucide-react";
 
 export default function HomePage() {
@@ -111,7 +111,7 @@ export default function HomePage() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1.5">
                 <div className="text-[11px] font-bold uppercase tracking-wider text-slate-900 flex items-center gap-1.5">
-                  <Sparkles className="w-3.5 h-3.5 text-blue-600" />
+                  <FileText className="w-3.5 h-3.5 text-blue-600" />
                   1. What Happened
                 </div>
                 <p className="text-xs text-slate-700 leading-relaxed font-medium">
@@ -162,7 +162,7 @@ export default function HomePage() {
           <div className="p-6 rounded-2xl border border-slate-200 bg-white shadow-sm space-y-4">
             <div className="flex items-center justify-between">
               <span className="text-xs font-bold uppercase tracking-wider text-slate-700 flex items-center gap-1.5">
-                <Flame className="w-4 h-4 text-red-600" />
+                <Activity className="w-4 h-4 text-red-600" />
                 Live Volatility Meter
               </span>
               <span className="text-[10px] font-mono text-red-700 font-bold bg-red-50 px-2 py-0.5 rounded-md border border-red-200 uppercase tracking-wider">HIGH IMPACT</span>

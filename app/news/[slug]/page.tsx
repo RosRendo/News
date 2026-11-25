@@ -11,7 +11,7 @@ import {
   Clock,
   ExternalLink,
   Layers,
-  Sparkles,
+  FileText,
   BarChart3,
   Target,
   Share2,
@@ -196,7 +196,7 @@ export default async function NewsArticlePage({ params }: NewsArticlePageProps) 
       <section className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div className="p-5 rounded-2xl bg-slate-50 border border-slate-200 space-y-2">
           <div className="text-xs font-bold uppercase tracking-wider text-slate-900 flex items-center gap-1.5">
-            <Sparkles className="w-4 h-4 text-blue-600" />
+            <FileText className="w-4 h-4 text-blue-600" />
             1. What Happened
           </div>
           <p className="text-xs text-slate-700 leading-relaxed font-medium">

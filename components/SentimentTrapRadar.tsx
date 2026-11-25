@@ -463,15 +463,24 @@ export default function SentimentTrapRadar() {
                     Action
                   </span>
                   <span
-                    className={`text-[11px] font-black font-mono tracking-tight ${
+                    className={`inline-flex items-center gap-1.5 text-[11px] font-bold font-mono tracking-tight ${
                       asset.contrarianSignal === "FADE_CROWD_SHORT"
-                        ? "text-red-600"
-                        : "text-emerald-600"
+                        ? "text-red-700"
+                        : "text-emerald-700"
                     }`}
                   >
+                    <span
+                      className={`w-1.5 h-1.5 rounded-full ${
+                        asset.contrarianSignal === "FADE_CROWD_SHORT"
+                          ? "bg-red-500"
+                          : "bg-emerald-500"
+                      }`}
+                    />
                     {asset.contrarianSignal === "FADE_CROWD_SHORT"
-                      ? "⚡ FADE TRAP"
-                      : "🚀 RIDE FLOW"}
+                      ? "FADE CROWD (SHORT)"
+                      : asset.contrarianSignal === "FADE_CROWD_BUY"
+                      ? "FADE CROWD (LONG)"
+                      : "INSTITUTIONAL ACCUMULATION"}
                   </span>
                 </div>
 

@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { Sentiment } from "@/lib/types";
 import BiasMeter from "@/components/BiasMeter";
-import { TrendingUp, TrendingDown, Minus, Zap } from "lucide-react";
+import { TrendingUp, TrendingDown, Minus, Activity } from "lucide-react";
 
 interface DynamicGoldImpactProps {
   bias: Sentiment;
@@ -107,7 +107,7 @@ export default function DynamicGoldImpact({
       {/* Dynamic Live Quote Bar */}
       <div className="flex items-center justify-between p-2 rounded-lg bg-white border border-slate-200 text-xs font-mono">
         <span className="text-slate-500 text-[11px] flex items-center gap-1">
-          <Zap className="w-3 h-3 text-amber-500 fill-amber-500" />
+          <Activity className="w-3 h-3 text-blue-600" />
           Live Price:
         </span>
         <div className="flex items-center gap-2">

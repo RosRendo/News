@@ -13,7 +13,7 @@ import LiveReleaseCountdown from "@/components/LiveReleaseCountdown";
 import {
   Calendar as CalendarIcon,
   Info,
-  Sparkles,
+  FileText,
   AlertTriangle,
   ArrowRight,
   Filter,
@@ -270,7 +270,7 @@ export default function CalendarPage() {
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
                         <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
                           <span className="font-bold text-slate-900 flex items-center gap-1.5">
-                            <Sparkles className="w-3.5 h-3.5 text-blue-600" />
+                            <FileText className="w-3.5 h-3.5 text-blue-600" />
                             Plain-English Summary:
                           </span>
                           <p className="text-slate-700 leading-relaxed font-medium">
