@@ -58,10 +58,20 @@ export async function POST(request: Request) {
   try {
     let body: { email?: string; pair?: string } = {};
     try {
-      body = await request.json();
+      const rawText = await request.text();
+      try {
+        body = JSON.parse(rawText);
+      } catch {
+        // Fallback for form-encoded or query params
+        const params = new URLSearchParams(rawText);
+        body = {
+          email: params.get("email") || undefined,
+          pair: params.get("pair") || undefined,
+        };
+      }
     } catch {
       return NextResponse.json(
-        { success: false, error: "Invalid JSON request body." },
+        { success: false, error: "Invalid request payload." },
         { status: 400 }
       );
     }
