@@ -203,7 +203,7 @@ export const SAMPLE_EVENTS: EconomicEvent[] = [
       "The index for shelter rose 0.4 percent in October, accounting for over half of the monthly all items increase. The food index also increased over the month, rising 0.2 percent as the food at home index increased 0.1 percent and the food away from home index rose 0.2 percent. The energy index was unchanged over the month, after declining 1.9 percent in September.",
       "Excluding food and energy, the core CPI rose 0.3 percent in October, matching the monthly increases in August and September. Major contributors to the core increase included shelter, used cars and trucks, airline fares, medical care, and recreation.",
       "For financial markets, the persistent strength in core services proves that the final mile of the Federal Reserve's disinflation process remains bumpy. Interest rate futures immediately repriced the terminal Fed Funds rate higher, reducing the probability of an immediate aggressive rate cut.",
-      "In foreign exchange and commodities, the U.S. Dollar Index (DXY) advanced to 104.48, while Spot Gold (XAUUSD) faced immediate liquidity consolidation, fluctuating around its key $3,660 pivot near $3,654 per ounce."
+      "In foreign exchange and commodities, the U.S. Dollar Index (DXY) advanced to 104.48, while Spot Gold (XAUUSD) faced immediate liquidity consolidation, fluctuating around its key $3,485 pivot near $3,463 per ounce."
     ],
     assetReactions: {
       usd: "BULLISH",
@@ -215,8 +215,8 @@ export const SAMPLE_EVENTS: EconomicEvent[] = [
       {
         pair: "XAUUSD (Gold)",
         bias: "BEARISH",
-        keyPivot: "$3,660",
-        tradeScenario: "Sellers defending $3,660 pivot; targeting liquidity pool at $3,630. Bullish structure invalidated above $3,685.",
+        keyPivot: "$3,485",
+        tradeScenario: "Sellers defending $3,485 pivot; targeting liquidity pool at $3,430. Bullish structure invalidated above $3,510.",
       },
       {
         pair: "EURUSD",
@@ -284,7 +284,7 @@ export const SAMPLE_EVENTS: EconomicEvent[] = [
   {
     id: "evt-gold-004",
     slug: "gold-bullion-demand-central-banks",
-    title: "Central Bank Gold Accumulation Hits Record Pace Near $3,650 Spot Plateau",
+    title: "Central Bank Gold Accumulation Hits Record Pace Near $3,460 Spot Floor",
     country: "Global",
     currency: "USD",
     dayOfWeek: "Tuesday",
@@ -302,13 +302,13 @@ export const SAMPLE_EVENTS: EconomicEvent[] = [
     previous: "890t",
     surpriseDeviation: 90,
     summaryWhatHappened: "Sovereign reserves and Eastern central banks purchased over 1,000 tonnes of physical gold bullion year-to-date, providing a structural long-term floor beneath prices.",
-    whyMarketMoved: "Even while short-term interest rate yields create temporary dips in gold, persistent physical buying creates aggressive buy-the-dip demand zones between $3,600 - $3,630.",
+    whyMarketMoved: "Even while short-term interest rate yields create temporary dips in gold, persistent physical buying creates aggressive buy-the-dip demand zones between $3,400 - $3,430.",
     fullArticle: [
       "According to the latest quarterly data from the World Gold Council, central banks around the globe have purchased an unprecedented 1,040 metric tonnes of physical gold in the year to date.",
       "This robust institutional appetite has defied traditional correlation models. Historically, a surging U.S. Dollar and elevated real bond yields create severe downward pressure on non-yielding assets like precious metals.",
       "However, structural reserve diversification away from U.S. Treasury paper—spearheaded by central banks across emerging economies, China, and Eastern Europe—has absorbed Western paper sell-offs with ease.",
-      "Institutional commodity desks note that while speculative futures contracts on COMEX may experience short-term liquidations on hawkish Fed commentary, physical bullion vaults are absorbing supply around the $3,600–$3,630 price band.",
-      "Analysts view any corrective pullback towards $3,600 as high-probability sovereign accumulation territory rather than the start of a secular bear trend."
+      "Institutional commodity desks note that while speculative futures contracts on COMEX may experience short-term liquidations on hawkish Fed commentary, physical bullion vaults are absorbing supply around the $3,400–$3,430 price band.",
+      "Analysts view any corrective pullback towards $3,400 as high-probability sovereign accumulation territory rather than the start of a secular bear trend."
     ],
     assetReactions: {
       usd: "NEUTRAL",
@@ -320,8 +320,8 @@ export const SAMPLE_EVENTS: EconomicEvent[] = [
       {
         pair: "XAUUSD",
         bias: "BULLISH",
-        keyPivot: "$3,640",
-        tradeScenario: "Institutional order block between $3,600–$3,630 acts as high-probability swing accumulation territory.",
+        keyPivot: "$3,460",
+        tradeScenario: "Institutional order block between $3,400–$3,430 acts as high-probability swing accumulation territory.",
       },
     ],
   },
@@ -590,8 +590,8 @@ export const SAMPLE_EVENTS: EconomicEvent[] = [
       {
         pair: "XAUUSD",
         bias: "BULLISH",
-        keyPivot: "$3,650",
-        tradeScenario: "Temporary safe haven bid targets $3,675. Resistance solid at $3,685.",
+        keyPivot: "$3,485",
+        tradeScenario: "Temporary safe haven bid targets $3,510. Resistance solid at $3,525.",
       },
     ],
   },

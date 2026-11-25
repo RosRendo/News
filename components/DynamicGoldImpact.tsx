@@ -19,9 +19,9 @@ export default function DynamicGoldImpact({
   mode = "compact",
 }: DynamicGoldImpactProps) {
   const [goldQuote, setGoldQuote] = useState({
-    price: "$3,634.70",
-    change: "+0.42%",
-    isUp: true,
+    price: "$3,463.00",
+    change: "-3.57%",
+    isUp: false,
   });
 
   useEffect(() => {
