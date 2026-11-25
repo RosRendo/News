@@ -6,40 +6,49 @@ interface Subscriber {
   email: string;
   pair?: string;
   subscribedAt: string;
-  ip?: string;
 }
 
-const DATA_DIR = path.join(process.cwd(), "data");
-const SUBSCRIBERS_FILE = path.join(DATA_DIR, "subscribers.json");
+// In-memory global store to guarantee persistence during lambda lifecycle
+const globalSubscribers: Subscriber[] = [];
 
-// In-memory fallback cache for serverless environments
-let memorySubscribers: Subscriber[] = [];
+function getStoragePath(): string {
+  // If running in Vercel or production serverless, write to writable /tmp
+  if (process.env.VERCEL || process.env.NODE_ENV === "production") {
+    return path.join("/tmp", "subscribers.json");
+  }
+  return path.join(process.cwd(), "data", "subscribers.json");
+}
 
-function getSubscribers(): Subscriber[] {
+function loadSubscribers(): Subscriber[] {
   try {
-    if (fs.existsSync(SUBSCRIBERS_FILE)) {
-      const raw = fs.readFileSync(SUBSCRIBERS_FILE, "utf8");
+    const filePath = getStoragePath();
+    if (fs.existsSync(filePath)) {
+      const raw = fs.readFileSync(filePath, "utf8");
       const parsed = JSON.parse(raw);
       if (Array.isArray(parsed)) {
-        memorySubscribers = parsed;
         return parsed;
       }
     }
   } catch {
     // Return memory fallback
   }
-  return memorySubscribers;
+  return globalSubscribers;
 }
 
-function saveSubscribers(list: Subscriber[]): void {
-  memorySubscribers = list;
+function persistSubscribers(list: Subscriber[]): void {
+  // Update memory store
+  globalSubscribers.length = 0;
+  globalSubscribers.push(...list);
+
   try {
-    if (!fs.existsSync(DATA_DIR)) {
-      fs.mkdirSync(DATA_DIR, { recursive: true });
+    const filePath = getStoragePath();
+    const dir = path.dirname(filePath);
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir, { recursive: true });
     }
-    fs.writeFileSync(SUBSCRIBERS_FILE, JSON.stringify(list, null, 2), "utf8");
-  } catch (err) {
-    console.error("Failed to write to subscribers file, cached in memory:", err);
+    fs.writeFileSync(filePath, JSON.stringify(list, null, 2), "utf8");
+  } catch {
+    // Memory cache remains active if filesystem is restricted
   }
 }
 
@@ -47,24 +56,33 @@ const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export async function POST(request: Request) {
   try {
-    const body = await request.json();
+    let body: { email?: string; pair?: string } = {};
+    try {
+      body = await request.json();
+    } catch {
+      return NextResponse.json(
+        { success: false, error: "Invalid JSON request body." },
+        { status: 400 }
+      );
+    }
+
     const { email, pair } = body;
 
     if (!email || typeof email !== "string" || !EMAIL_REGEX.test(email.trim())) {
       return NextResponse.json(
-        { success: false, error: "Please provide a valid email address." },
+        { success: false, error: "Please enter a valid email address." },
         { status: 400 }
       );
     }
 
     const cleanEmail = email.trim().toLowerCase();
-    const existing = getSubscribers();
+    const currentList = loadSubscribers();
 
-    const isDuplicate = existing.some((sub) => sub.email.toLowerCase() === cleanEmail);
+    const isDuplicate = currentList.some((s) => s.email.toLowerCase() === cleanEmail);
     if (isDuplicate) {
       return NextResponse.json({
         success: true,
-        message: "You are already subscribed to MacroPulse Wire intelligence.",
+        message: "You are already registered for MacroPulse institutional intelligence.",
         isExisting: true,
       });
     }
@@ -75,12 +93,12 @@ export async function POST(request: Request) {
       subscribedAt: new Date().toISOString(),
     };
 
-    const updated = [newSubscriber, ...existing];
-    saveSubscribers(updated);
+    const updated = [newSubscriber, ...currentList];
+    persistSubscribers(updated);
 
     return NextResponse.json({
       success: true,
-      message: "Subscription confirmed. You will receive institutional pre-market briefings.",
+      message: "Subscription confirmed. You will receive pre-market macro briefings.",
       totalSubscribers: updated.length,
     });
   } catch (err) {
@@ -92,7 +110,7 @@ export async function POST(request: Request) {
 }
 
 export async function GET() {
-  const subscribers = getSubscribers();
+  const subscribers = loadSubscribers();
   return NextResponse.json({
     success: true,
     count: subscribers.length,
