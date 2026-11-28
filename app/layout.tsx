@@ -17,6 +17,9 @@ export const metadata: Metadata = {
     "XAUUSD gold news",
     "central bank interest rates",
   ],
+  other: {
+    "google-adsense-account": "ca-pub-4146607505401554",
+  },
 };
 
 export default function RootLayout({
@@ -26,6 +29,14 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <head>
+        <meta name="google-adsense-account" content="ca-pub-4146607505401554" />
+        <script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4146607505401554"
+          crossOrigin="anonymous"
+        />
+      </head>
       <body className="min-h-screen bg-slate-50 text-slate-900 flex flex-col selection:bg-blue-600/10 selection:text-blue-900">
         <Navbar />
         <TickerTape />
